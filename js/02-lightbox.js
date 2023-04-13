@@ -1,38 +1,41 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-const gallery = document.querySelector(".gallery");
-gallery.addEventListener("click", onClickImage);
+const galleryOfImages = document.querySelector(".gallery");
+galleryOfImages.addEventListener("click", onClickImage);
 
-function createGalleryMarkup(gallery) {   //функція створення розмітки
+// const images = document.querySelectorAll(".gallery__item", onClickImage);
+// images.forEach(image => {
+//     image.addEventListener('click',)
+// });
+
+function createGalleryMarkup(gallery) {   
   return gallery
     .map(({ preview, original, description }) => {
         return `<li class="gallery__item">
        <a class="gallery__link" href="${original}" >
-      <img class="gallery__image" src="${preview}" title="${description}" alt="${description}" />
+      <img class="gallery__image" src="${preview}"  alt="${description}" />
    </a>
 </li>`;
     })
     .join("");
 }
 
-gallery.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems)); //додавання розмітки в елемент ul
+galleryOfImages.insertAdjacentHTML(
+  "beforeend",
+  createGalleryMarkup(galleryItems)
+);
 
-function onClickImage(evt) {  //функція, яка викликається при кліку на зображення
-    if (evt.target.nodeName !== "IMG") {    // якщо цільовий елемент не тег img, функція не спрацює
-        return;
-    }
-    let gallery = new SimpleLightbox(".gallery a");
-    gallery.on("show.simplelightbox");
-    //     , function () {
-       
-    // });
-   
-    // gallery.on("error.simplelightbox", function (e) {
-    //   console.log(e); // Some usefull information
-    // });
-
-evt.preventDefault();
-
+function onClickImage(evt) {
+  if (evt.target.nodeName !== "IMG") {
+      return;
+  }
+    evt.preventDefault();
+  const gallery = new SimpleLightbox(".gallery a", {
+    captions: true,
+    captionsData: "alt",
+  });
+  gallery.open();
 }
-console.log(gallery);
+ 
+    
