@@ -25,23 +25,32 @@ function onClickImage(evt) {  //функція, яка викликається 
   if (evt.target.nodeName !== "IMG") {    // якщо цільовий елемент не тег img, функція не спрацює
     return;
   }
+  evt.preventDefault();
+  
   let src = evt.target.getAttribute("src"); //присвоєння змінній src значення, яке дорівнює значенню атрибута src цільового елемента
   src = evt.target.getAttribute("data-source"); //заміна значення атрибута src на значення атрибута data-source у цыльового елемента
-  basicLightbox //використання бібліотеки
-    .create(
-      `<img width="1400" height="900" src="${src}">`
-    )
-    .show();
-    evt.preventDefault();  //відміна дії за замовчуванням, а саме, перехід на нову сторінку при кліку на посиланні
- }
+  
+  const instance = basicLightbox.create(
+    `<img width="1400" height="900" src="${src}">`,
 
-if (document.getElementsByClassName("basicLightbox--visible") !== null) {   //перевірка на існування елемента з таким класом, тобто,якшо модальне вікно відкрите-такий елемент існує
-  window.addEventListener("keydown", onEscPress); // вішаємо слухача на window
-}
-
-function onEscPress(evt) {
-  const elem = document.querySelector(".basicLightbox--visible"); // знаходимо елемент з таким класом
-  if (evt.code === "Escape") {     // якщо натиснута кнопка Esc- цей елемент видалиться
-    elem.remove();
+    {
+      onShow: () => {
+        addEventListener("keydown", onClosePressEsc);
+      }
+    },
+    {
+      onclose: () => {
+        removeEventListener("keydown", onClosePressEsc);
+      }
+    })
+  
+  function onClosePressEsc(event) {
+    if (event.code !== "Escape") {
+      return
+    }
+    instance.close();
   }
+ 
+    instance.show();
 }
+

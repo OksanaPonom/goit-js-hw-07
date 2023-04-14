@@ -2,12 +2,6 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
 const galleryOfImages = document.querySelector(".gallery");
-galleryOfImages.addEventListener("click", onClickImage);
-
-// const images = document.querySelectorAll(".gallery__item", onClickImage);
-// images.forEach(image => {
-//     image.addEventListener('click',)
-// });
 
 function createGalleryMarkup(gallery) {   
   return gallery
@@ -26,16 +20,9 @@ galleryOfImages.insertAdjacentHTML(
   createGalleryMarkup(galleryItems)
 );
 
-function onClickImage(evt) {
-  if (evt.target.nodeName !== "IMG") {
-      return;
-  }
-    evt.preventDefault();
   const gallery = new SimpleLightbox(".gallery a", {
     captions: true,
     captionsData: "alt",
+    captionDelay: 250
   });
-  gallery.open();
-}
- 
     
